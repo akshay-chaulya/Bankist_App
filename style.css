@@ -27,15 +27,12 @@ nav {
 #welcome {
     font-size: 20px;
     font-weight: 500;
+    transition: all 00.3s;
 }
 
 .logo {
     height: 60%;
 }
-
-/* .login {
-    display: flex;
-} */
 
 .login_input {
     border: none;
@@ -47,7 +44,7 @@ nav {
     font-size: 1.6rem;
     border: 1px solid #fff;
     outline: none;
-    transition: all 0.3s;
+    transition: all 00.3s;
 }
 
 .login_input::placeholder {
@@ -61,11 +58,225 @@ nav {
 .login_btn {
     border: none;
     font-size: 2.2rem;
-    transition: all 0.3s;
+    background: transparent;
+    cursor: pointer;
+    transition: all 00.3s;
 }
 
 .login_btn:focus,
 .login_btn:hover {
     outline: none;
     color: #777;
+}
+
+/* MAIN */
+.container {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 1s;
+}
+
+.opacity {
+    opacity: 100%;
+}
+
+.main {
+    position: relative;
+    max-width: 100rem;
+    display: grid;
+    grid-template-columns: 4fr 3fr;
+    grid-template-rows: auto repeat(3, 15rem) auto;
+    gap: 2rem;
+    transition: all 1s;
+}
+
+.balance_menu {
+    grid-column: 1 / span 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 0;
+}
+
+.menus h1 {
+    font-size: 2.2rem;
+    font-weight: 500;
+}
+
+.menus p {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #888;
+}
+
+#time-Date {
+    font-size: 1.5rem;
+}
+
+.balance {
+    display: flex;
+    align-items: center;
+    font-size: 4rem;
+}
+
+/* MOVMENTS DIV */
+.movments {
+    background-color: white;
+    grid-row: 2 / span 3;
+    border-radius: 1.5rem 0 0 0;
+    overflow: scroll;
+    transition: all 0.3s;
+}
+
+.move {
+    padding: 2.25rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+}
+
+.moveType {
+    padding: .5rem 1.2rem;
+    font-size: 1.2rem;
+    border-radius: 2rem;
+    text-transform: uppercase;
+
+}
+
+.deposit {
+    background-image: linear-gradient(to left top, rgb(57, 179, 133), rgb(155, 225, 93));
+}
+
+.withdrawal {
+    background-image: linear-gradient(to left top, rgb(229, 42, 90), rgb(255, 88, 95));
+}
+
+.moveAmount {
+    font-size: 1.7rem;
+}
+
+/* SUMMARY DIV */
+.summary {
+    grid-row: 5 / 6;
+    display: flex;
+    align-items: baseline;
+    margin-top: 2rem;
+    padding: 1rem 0;
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.summary_labal {
+    margin-right: 4rem;
+}
+
+.summary_value {
+    margin-left: .5rem;
+    font-size: 2.2rem;
+}
+
+.summary_value--in,
+.summary_value--interest {
+    color: rgb(102, 200, 115)
+}
+
+.summary_value--out {
+    color: rgb(245, 70, 93);
+}
+
+.summary_btn {
+    border: none;
+    font-size: 1.2rem;
+    margin-left: 4rem;
+    cursor: pointer;
+}
+
+/* Labal Transfer */
+.operation {
+    border-radius: 1rem;
+    padding: 3rem 4rem;
+    color: rgb(51, 51, 51);
+}
+
+.form {
+    display: grid;
+    grid-template-columns: 2.5fr 2.5fr 1fr;
+    grid-template-rows: auto auto;
+    gap: .5rem 1rem;
+    margin-top: 2rem;
+}
+
+.form_input {
+    border-radius: .5rem;
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.4);
+    font-family: inherit;
+    font-size: 1.5rem;
+    text-align: center;
+    color: #333;
+    padding: 0.7rem 1rem;
+    border-radius: 0.7rem;
+    transition: all 00.3s;
+}
+
+.form_input:focus {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.form_btn {
+    border: none;
+    border-radius: .7rem;
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.form p {
+    text-align: center;
+    font-size: 1.4rem;
+}
+
+.operation--transfer {
+    background-image: linear-gradient(to top left, #ffb003, #ffcb03);
+}
+
+/* operation loan */
+.operation--loan {
+    background-image: linear-gradient(to left top, rgb(57, 179, 133), rgb(155, 225, 93));
+}
+
+.operation--close {
+    background-image: linear-gradient(to left top, rgb(229, 42, 90), rgb(255, 88, 95));
+}
+
+.form_loan {
+    display: grid;
+    grid-template-columns: 2.5fr 1fr 2.5fr;
+    grid-template-rows: auto auto;
+}
+
+.form_loan p {
+    grid-column: 1 / 2;
+}
+
+/* logout_time */
+.logout_time {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem 0;
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-top: 2rem;
+}
+
+.logout_time--time {
+    font-size: 1.4rem;
+    font-weight: 700;
 }
