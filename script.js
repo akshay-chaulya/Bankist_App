@@ -41,30 +41,32 @@ const accounts = [account1, account2, account3, account4];
 // Elements
 let errorText;
 
-const labaleWalcome = document.getElementById("welcome");
-const loginInputUser = document.querySelector(".login_input--user");
-const loginInputPin = document.querySelector(".login_input--pin");
 const container = document.querySelector(".container");
-const totalAmount = document.getElementById("total_amount");
-const timeDate = document.getElementById("time-Date");
 
+const labaleWalcome = document.getElementById("welcome");
+const labaleTotalAmount = document.getElementById("total_amount");
+const labaleTimeDate = document.getElementById("time-Date");
+const labaleMovements = document.querySelector(".movments");
+const labaleAmountIn = document.querySelector(".summary_value--in")
+const labaleAmountOut = document.querySelector(".summary_value--out")
+const labaleInterestAmount = document.querySelector(".summary_value--interest")
+const labaleLogoutTimer = document.querySelector(".logout_time--time");
 
-const movementsElem = document.querySelector(".movments");
-const inAmountElem = document.querySelector(".summary_value--in")
-const outAmountElem = document.querySelector(".summary_value--out")
-const interestAmountElem = document.querySelector(".summary_value--interest")
-const logoutTimerElem = document.querySelector(".logout_time--time");
-
-const transferToElem = document.querySelector(".transfer_input--to");
-const transferAmountElem = document.querySelector(".transfer_input--amount");
-const operationLoanElem = document.querySelector(".operation--loan");
-const operationCloseElem = document.querySelector(".operation--close");
+const inputUser = document.querySelector(".login_input--user");
+const inputPin = document.querySelector(".login_input--pin");
+const inputTransferTo = document.querySelector(".transfer_input--to");
+const inputTransferAmount = document.querySelector(".transfer_input--amount");
+const inputLoainAmount = document.querySelector(".form_loan_input--amount")
+const inputCloseUser = document.querySelector(".form_close_input--user");
+const inputClosePin = document.querySelector(".form_close_input--pin");
 
 const btnLogin = document.querySelector(".login_btn");
-const btnSummary = document.querySelector(".summary_btn");
+const btnSort = document.querySelector(".summary_btn");
 const btnTransfer = document.querySelector(".btn--transfer");
+const btnLoan = document.querySelector(".form_btn--loan");
+const btnClose = document.querySelector(".form_btn--close");
 
-
+// create and save the user name 
 function createUserName(accounts) {
     accounts.forEach(account => {
         account.userName = account.owner
@@ -76,33 +78,37 @@ function createUserName(accounts) {
 }
 createUserName(accounts);
 
+// login btn 
 btnLogin.addEventListener('click', (e) => {
     e.preventDefault()
     login();
 })
 
 let currentAccount;
+// login function find the user account and call all function
 function login() {
-    const loginInputUserValue = loginInputUser.value;
-    const loginInputPinValue = Number(loginInputPin.value);
-    loginInputUser.value = loginInputPin.value = '';
-    loginInputPin.blur()
+    const inputUserValue = inputUser.value;
+    const inputPinValue = Number(inputPin.value);
+    inputUser.value = inputPin.value = '';
+    inputPin.blur()
     currentAccount = accounts.
-        find(acc => acc.userName === loginInputUserValue);
-    if (currentAccount && currentAccount.pin === loginInputPinValue) {
+        find(acc => acc.userName === inputUserValue);
+    if (currentAccount && currentAccount.pin === inputPinValue) {
         displayAccount(currentAccount);
         updateUI(currentAccount);
-        startRestartLogoutTimer();
+        startLogoutTimer();
     }
 }
 
+// the user acount and owner name display and setDate function call
 function displayAccount(account) {
     labaleWalcome.textContent = `Welcome back, ${account.owner.split(' ')[0]}`
     container.classList.add("opacity");
-    setTimeAndDate();
+    setDate();
 }
 
-function setTimeAndDate() {
+// set today Date in Web page
+function setDate() {
     let date = new Date();
     let day = date.getDate();
     let month = date.getMonth();
@@ -110,20 +116,23 @@ function setTimeAndDate() {
     let year = date.getFullYear();
     day = day > 10 ? day : `0${day}`;
     month = month > 10 ? month : `0${month}`;
-    timeDate.textContent = `${day}/${month}/${year}`;
+    labaleTimeDate.textContent = `${day}/${month}/${year}`;
 }
 
+// all calcDisplayBalance, calcDisplaySummary and displayMovments call in one function
 function updateUI(account) {
     calcDisplayBalance(account)
     calcDisplaySummary(account);
     displayMovments(account.movements);
 }
 
+// calculat the balance and save it and display
 function calcDisplayBalance(account) {
     account.balance = account.movements.reduce((acc, mov) => acc + mov, 0);
-    totalAmount.textContent = account.balance
+    labaleTotalAmount.textContent = account.balance
 }
 
+// calculat in, out and interest amount and display it. 
 function calcDisplaySummary(account) {
     const IN = account.movements
         .filter(mov => mov > 0)
@@ -137,14 +146,14 @@ function calcDisplaySummary(account) {
         .filter(interest => interest > 1)
         .reduce((acc, mov) => acc + mov, 0);
 
-    inAmountElem.textContent = `₹${IN}`;
-    outAmountElem.textContent = `₹${Math.abs(OUT)}`;
-    interestAmountElem.textContent = `₹${interest}`
+    labaleAmountIn.textContent = `₹${IN}`;
+    labaleAmountOut.textContent = `₹${Math.abs(OUT)}`;
+    labaleInterestAmount.textContent = `₹${interest}`
 }
 
-
+// display all current account movments
 function displayMovments(movements, sort = false) {
-    movementsElem.innerHTML = "";
+    labaleMovements.innerHTML = "";
     let movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
     movs.forEach((mov, i) => {
         let type = "deposit";
@@ -161,11 +170,12 @@ function displayMovments(movements, sort = false) {
             <span class="moveType ${type}">${i + 1} ${type}</span>
             <span class="moveAmount">₹${mov}</span>
         `
-        movementsElem.prepend(div);
+        labaleMovements.prepend(div);
     })
 }
 
-function startRestartLogoutTimer() {
+// logout the account in time
+function startLogoutTimer() {
     let minutes = 10;
     let second = 60;
     const timoutInterval = setInterval(() => {
@@ -175,17 +185,18 @@ function startRestartLogoutTimer() {
         }
         second = second < 10 && second > 0 ? `0${second}` : second;
         let logoutTimeStr = minutes < 10 ? `0${minutes}:${second}` : `${minutes}:${second}`
-        logoutTimerElem.textContent = logoutTimeStr;
+        labaleLogoutTimer.textContent = logoutTimeStr;
         if (minutes == 0 && second == 0) {
-            logoutTimerElem.textContent = "00:00"
+            labaleLogoutTimer.textContent = "00:00"
             clearInterval(timoutInterval)
         }
     }, 1000)
 
 }
 
+// sort all movments
 let count = 0;
-btnSummary.addEventListener('click', () => {
+btnSort.addEventListener('click', () => {
     count++;
     let sort = count % 2 == 0 ? false : true;
     let userFirst = labaleWalcome.textContent.slice(14);
@@ -196,17 +207,23 @@ btnSummary.addEventListener('click', () => {
     })
 })
 
+// Transfer money
 btnTransfer.addEventListener("click", (e) => {
     e.preventDefault();
     let recever = accounts
-        .find(acc => acc.userName === transferToElem.value);
-    let transferAmount = Number(transferAmountElem.value);
-    transferAmountElem.value = transferToElem.value = "";
-    transferToElem.focus();
+        .find(acc => acc.userName === inputTransferTo.value);
+    let inputTransferAmount = Number(inputTransferAmount.value);
+    inputTransferAmount.value = inputTransferTo.value = "";
+    inputTransferTo.focus();
 
-    if (recever && recever !== currentAccount && currentAccount.balance > transferAmount) {
-        recever.movements.push(transferAmount);
-        currentAccount.movements.push(-transferAmount);
+    if (
+        recever && recever !== currentAccount
+        && currentAccount.balance > inputTransferAmount
+        && inputTransferAmount > 0
+    ) {
+        recever.movements.push(inputTransferAmount);
+        currentAccount.movements.push(-inputTransferAmount);
         updateUI(currentAccount);
     }
 })
+
