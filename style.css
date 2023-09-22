@@ -9,7 +9,8 @@ html {
 }
 
 body {
-    min-height: 100vh;
+    position: relative;
+    height: 100vh;
     width: 100%;
     background-color: rgb(243, 243, 243);
     font-family: Arial, Helvetica, sans-serif;
@@ -80,7 +81,7 @@ nav {
 }
 
 .opacity {
-    opacity: 100%;
+    opacity: 100;
 }
 
 .main {
@@ -132,11 +133,11 @@ nav {
 }
 
 .move {
-    padding: 2.25rem 4rem;
+    padding: 2.5rem 4rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #eee;
 }
 
 .moveType {
@@ -280,3 +281,5 @@ nav {
     font-size: 1.4rem;
     font-weight: 700;
 }
+
+/* Error styleing */

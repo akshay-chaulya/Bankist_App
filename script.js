@@ -37,21 +37,13 @@ const account4 = {
 
 const accounts = [account1, account2, account3, account4];
 
-/////////////////////////////////////////////////
-setInterval(() => {
-    localStorage.setItem('accounts', `${JSON.stringify(accounts)}`)
-}, 10)
-
-let saveAccounts = JSON.parse(localStorage.getItem('accounts'))
-
-console.log(saveAccounts)
-
 ////////////////////////////////////////////////////////////
 // Elements
-const welcomeElem = document.getElementById("welcome");
+let errorText;
+
+const labaleWalcome = document.getElementById("welcome");
 const loginInputUser = document.querySelector(".login_input--user");
 const loginInputPin = document.querySelector(".login_input--pin");
-const loginBtn = document.querySelector(".login_btn");
 const container = document.querySelector(".container");
 const totalAmount = document.getElementById("total_amount");
 const timeDate = document.getElementById("time-Date");
@@ -61,69 +53,95 @@ const movementsElem = document.querySelector(".movments");
 const inAmountElem = document.querySelector(".summary_value--in")
 const outAmountElem = document.querySelector(".summary_value--out")
 const interestAmountElem = document.querySelector(".summary_value--interest")
-const summaryBtn = document.querySelector(".summary_btn");
+const logoutTimerElem = document.querySelector(".logout_time--time");
 
-const transferBtn = document.querySelector(".btn--transfer");
 const transferToElem = document.querySelector(".transfer_input--to");
 const transferAmountElem = document.querySelector(".transfer_input--amount");
 const operationLoanElem = document.querySelector(".operation--loan");
 const operationCloseElem = document.querySelector(".operation--close");
 
+const btnLogin = document.querySelector(".login_btn");
+const btnSummary = document.querySelector(".summary_btn");
+const btnTransfer = document.querySelector(".btn--transfer");
 
 
-loginBtn.addEventListener('click', (e) => {
+function createUserName(accounts) {
+    accounts.forEach(account => {
+        account.userName = account.owner
+            .toLowerCase()
+            .split(' ')
+            .map(word => word[0])
+            .join('')
+    })
+}
+createUserName(accounts);
+
+btnLogin.addEventListener('click', (e) => {
     e.preventDefault()
-    console.log(e)
-    findUserAccount();
-    loginInputPin.value = '';
-    loginInputUser.value = '';
+    login();
 })
 
-function findUserAccount() {
+let currentAccount;
+function login() {
     const loginInputUserValue = loginInputUser.value;
     const loginInputPinValue = Number(loginInputPin.value);
-
-    let userPas = '';
-
-    for (const [x, { owner, movements, interestRate, pin }] of Object.entries(saveAccounts)) {
-        let ownerFirst = owner.split(" ")[0];
-        let currentAmount = 0;
-        movements.forEach((x) => {
-            currentAmount += x;
-        });
-
-        userPas = owner.split(" ")[0].slice(0, 1) + owner.split(" ")[1].slice(0, 1)
-        userPas = userPas.toLowerCase();
-
-        if (userPas === loginInputUserValue && pin === loginInputPinValue) {
-            displayAccount(ownerFirst, currentAmount);
-            displayMovments(movements);
-            setSummary(movements, interestRate);
-            console.log()
-        }
+    loginInputUser.value = loginInputPin.value = '';
+    loginInputPin.blur()
+    currentAccount = accounts.
+        find(acc => acc.userName === loginInputUserValue);
+    if (currentAccount && currentAccount.pin === loginInputPinValue) {
+        displayAccount(currentAccount);
+        updateUI(currentAccount);
+        startRestartLogoutTimer();
     }
-
 }
 
-function displayAccount(ownerFirst, currentAmount) {
-    container.classList.add("opacity")
-    welcomeElem.textContent = `Welcome back, ${ownerFirst}`
-    totalAmount.textContent = currentAmount;
+function displayAccount(account) {
+    labaleWalcome.textContent = `Welcome back, ${account.owner.split(' ')[0]}`
+    container.classList.add("opacity");
     setTimeAndDate();
 }
 
 function setTimeAndDate() {
-    let time = new Date();
-    let day = time.getDate();
-    let month = time.getMonth();
+    let date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth();
     month += 1;
-    let year = time.getFullYear();
-
+    let year = date.getFullYear();
     day = day > 10 ? day : `0${day}`;
     month = month > 10 ? month : `0${month}`;
-
     timeDate.textContent = `${day}/${month}/${year}`;
 }
+
+function updateUI(account) {
+    calcDisplayBalance(account)
+    calcDisplaySummary(account);
+    displayMovments(account.movements);
+}
+
+function calcDisplayBalance(account) {
+    account.balance = account.movements.reduce((acc, mov) => acc + mov, 0);
+    totalAmount.textContent = account.balance
+}
+
+function calcDisplaySummary(account) {
+    const IN = account.movements
+        .filter(mov => mov > 0)
+        .reduce((acc, mov) => acc + mov, 0);
+    const OUT = account.movements
+        .filter(mov => mov < 0)
+        .reduce((acc, mov) => acc + mov, 0);
+    const interest = account.movements
+        .filter(mov => mov > 0)
+        .map(mov => mov * account.interestRate / 100)
+        .filter(interest => interest > 1)
+        .reduce((acc, mov) => acc + mov, 0);
+
+    inAmountElem.textContent = `₹${IN}`;
+    outAmountElem.textContent = `₹${Math.abs(OUT)}`;
+    interestAmountElem.textContent = `₹${interest}`
+}
+
 
 function displayMovments(movements, sort = false) {
     movementsElem.innerHTML = "";
@@ -147,28 +165,30 @@ function displayMovments(movements, sort = false) {
     })
 }
 
-function setSummary(movments, interestRate) {
-    let inAmount = 0;
-    let outAmount = 0;
-    movments.forEach(n => {
-        if (n > 0) {
-            inAmount += n;
-        } else {
-            outAmount += n;
+function startRestartLogoutTimer() {
+    let minutes = 10;
+    let second = 60;
+    const timoutInterval = setInterval(() => {
+        second = second == 0 ? 60 : second - 1;
+        if (second == 59) {
+            minutes -= 1;
         }
-    })
-    outAmount = Math.abs(outAmount);
-    let interest = inAmount * interestRate / 100;
-    inAmountElem.textContent = `₹${inAmount}`;
-    outAmountElem.textContent = `₹${outAmount}`;
-    interestAmountElem.textContent = `₹${interest}`
+        second = second < 10 && second > 0 ? `0${second}` : second;
+        let logoutTimeStr = minutes < 10 ? `0${minutes}:${second}` : `${minutes}:${second}`
+        logoutTimerElem.textContent = logoutTimeStr;
+        if (minutes == 0 && second == 0) {
+            logoutTimerElem.textContent = "00:00"
+            clearInterval(timoutInterval)
+        }
+    }, 1000)
+
 }
 
 let count = 0;
-summaryBtn.addEventListener('click', () => {
+btnSummary.addEventListener('click', () => {
     count++;
     let sort = count % 2 == 0 ? false : true;
-    let userFirst = welcomeElem.textContent.slice(14);
+    let userFirst = labaleWalcome.textContent.slice(14);
     accounts.forEach(acc => {
         if (acc.owner.startsWith(userFirst)) {
             displayMovments(acc.movements, sort);
@@ -176,23 +196,17 @@ summaryBtn.addEventListener('click', () => {
     })
 })
 
-transferBtn.addEventListener("click", (e) => {
+btnTransfer.addEventListener("click", (e) => {
     e.preventDefault();
-    let transferTo = transferToElem.value;
+    let recever = accounts
+        .find(acc => acc.userName === transferToElem.value);
     let transferAmount = Number(transferAmountElem.value);
+    transferAmountElem.value = transferToElem.value = "";
+    transferToElem.focus();
 
-    let userFirst = welcomeElem.textContent.slice(14);
-    accounts.forEach(acc => {
-        let userPass = acc.owner.split(" ")[0].slice(0, 1) + acc.owner.split(" ")[1].slice(0, 1)
-        if (acc.owner.startsWith(userFirst)) {
-            acc.movements.push(-transferAmount)
-        }
-        if (userPass.toLowerCase() === transferTo) {
-            acc.movements.push(transferAmount);
-        }
-        console.log(acc)
-    })
-    transferAmountElem.value = '';
-    transferToElem.value = '';
-
+    if (recever && recever !== currentAccount && currentAccount.balance > transferAmount) {
+        recever.movements.push(transferAmount);
+        currentAccount.movements.push(-transferAmount);
+        updateUI(currentAccount);
+    }
 })
