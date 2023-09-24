@@ -11,101 +11,103 @@
 </head>
 
 <body>
-    <!-- <div class="messageBox">
-        <p>Error</p>
-        <button id="btnOk">Ok</button>
-    </div> -->
+    <div class="errorContainer">
+        <div class="messageBox">
+            <p id="errorText">Please fillup all</p>
+            <button id="btnOk">ok</button>
+        </div>
+    </div>
+    <div>
+        <nav>
+            <h1 id="welcome">Log in to get started</h1>
+            <img class="logo" src="logo.png" alt="" class="logo">
+            <form class="login">
+                <input class="login_input login_input--user" type="" placeholder="user">
+                <input class="login_input login_input--pin" type="text" placeholder="PIN">
+                <button class="login_btn">&rarr;</button>
+            </form>
+        </nav>
+        <div class="container">
+            <div class="main">
+                <div class="balance_menu">
+                    <div class="menus">
+                        <h1>Current balance</h1>
+                        <p>
+                            As of
+                            <span id="time-Date">19/09/2023</span>
+                        </p>
+                    </div>
+                    <div class="balance">
+                        <p>₹</p>
+                        <span id="total_amount">00</span>
+                    </div>
+                </div>
 
-    <nav>
-        <h1 id="welcome">Log in to get started</h1>
-        <img class="logo" src="logo.png" alt="" class="logo">
-        <form class="login">
-            <input class="login_input login_input--user" type="" placeholder="user">
-            <input class="login_input login_input--pin" type="text" placeholder="PIN">
-            <button class="login_btn">&rarr;</button>
-        </form>
-    </nav>
-    <div class="container">
-        <div class="main">
-            <div class="balance_menu">
-                <div class="menus">
-                    <h1>Current balance</h1>
-                    <p>
-                        As of
-                        <span id="time-Date">19/09/2023</span>
+                <div class="movments">
+                    <div class="move">
+                        <span class="moveType deposit">8 DEPOSIT</span>
+                        <span class="moveAmount">₹800</span>
+                    </div>
+
+                    <div class="move">
+                        <span class="moveType withdrawal">8 withdrawal</span>
+                        <span class="moveAmount">₹-800</span>
+                    </div>
+                </div>
+
+                <div class="summary">
+                    <p class="summary_labal">
+                        IN
+                        <span class="summary_value summary_value--in">₹2000</span>
                     </p>
-                </div>
-                <div class="balance">
-                    <p>₹</p>
-                    <span id="total_amount">00</span>
-                </div>
-            </div>
-
-            <div class="movments">
-                <div class="move">
-                    <span class="moveType deposit">8 DEPOSIT</span>
-                    <span class="moveAmount">₹800</span>
+                    <p class="summary_labal">
+                        OUT
+                        <span class="summary_value summary_value--out">₹500</span>
+                    </p>
+                    <p class="summary_labal">
+                        INTEREST
+                        <span class="summary_value summary_value--interest">10.4%</span>
+                    </p>
+                    <button class="summary_btn">&downarrow; SORT</button>
                 </div>
 
-                <div class="move">
-                    <span class="moveType withdrawal">8 withdrawal</span>
-                    <span class="moveAmount">₹-800</span>
+                <div class="operation operation--transfer">
+                    <h1>Transfer money</h1>
+                    <form class="form form_transfer">
+                        <input type="text" class="form_input transfer_input--to">
+                        <input type="number" class="form_input transfer_input--amount">
+                        <button class="form_btn btn--transfer">&rarr;</button>
+                        <p>Transfer to</p>
+                        <p>Amount</p>
+                    </form>
                 </div>
-            </div>
 
-            <div class="summary">
-                <p class="summary_labal">
-                    IN
-                    <span class="summary_value summary_value--in">₹2000</span>
-                </p>
-                <p class="summary_labal">
-                    OUT
-                    <span class="summary_value summary_value--out">₹500</span>
-                </p>
-                <p class="summary_labal">
-                    INTEREST
-                    <span class="summary_value summary_value--interest">10.4%</span>
-                </p>
-                <button class="summary_btn">&downarrow; SORT</button>
-            </div>
+                <div class="operation operation--loan">
+                    <h1>Request loan</h1>
+                    <form class="form form_loan">
+                        <input type="number" class="form_input form_loan_input--amount">
+                        <button class="form_btn form_btn--loan">&rarr;</button>
+                        <p>Amount</p>
+                    </form>
+                </div>
 
-            <div class="operation operation--transfer">
-                <h1>Transfer money</h1>
-                <form class="form form_transfer">
-                    <input type="text" class="form_input transfer_input--to">
-                    <input type="number" class="form_input transfer_input--amount">
-                    <button class="form_btn btn--transfer">&rarr;</button>
-                    <p>Transfer to</p>
-                    <p>Amount</p>
-                </form>
-            </div>
+                <div class="operation operation--close">
+                    <h1>Close account</h1>
+                    <form class="form form_close">
+                        <input type="text" class="form_input form_close_input--user">
+                        <input type="password" class="form_input form_close_input--pin">
+                        <button class="form_btn form_btn--close">&rarr;</button>
+                        <p>Confirm user</p>
+                        <p>Confirm PIN</p>
+                    </form>
+                </div>
 
-            <div class="operation operation--loan">
-                <h1>Request loan</h1>
-                <form class="form form_loan">
-                    <input type="number" class="form_input form_loan_input--amount">
-                    <button class="form_btn form_btn--loan">&rarr;</button>
-                    <p>Amount</p>
-                </form>
-            </div>
-
-            <div class="operation operation--close">
-                <h1>Close account</h1>
-                <form class="form form_close">
-                    <input type="text" class="form_input form_close_input--user">
-                    <input type="text" class="form_input form_close_input--pin">
-                    <button class="form_btn form_btn--close">&rarr;</button>
-                    <p>Confirm user</p>
-                    <p>Confirm PIN</p>
-                </form>
-            </div>
-
-            <div class="logout_time">
-                <p>You will be logged out in <span class="logout_time--time">02:00</span></p>
+                <div class="logout_time">
+                    <p>You will be logged out in <span class="logout_time--time">02:00</span></p>
+                </div>
             </div>
         </div>
     </div>
-
 
 </body>
 

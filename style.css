@@ -10,11 +10,12 @@ html {
 
 body {
     position: relative;
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
     background-color: rgb(243, 243, 243);
     font-family: Arial, Helvetica, sans-serif;
     color: #444;
+    /* overflow: hidden; */
 }
 
 nav {
@@ -78,10 +79,6 @@ nav {
     justify-content: center;
     opacity: 0;
     transition: all 1s;
-}
-
-.opacity {
-    opacity: 100;
 }
 
 .main {
@@ -194,6 +191,13 @@ nav {
     font-size: 1.2rem;
     margin-left: 4rem;
     cursor: pointer;
+    background-color: inherit;
+}
+
+
+.summary_btn:hover {
+    background-color: inherit;
+    color: #8b8b8b;
 }
 
 /* Labal Transfer */
@@ -283,3 +287,65 @@ nav {
 }
 
 /* Error styleing */
+
+.errorContainer {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.428);
+    height: 100%;
+    width: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all .3s;
+    z-index: 2;
+}
+
+.messageBox {
+    height: 20rem;
+    width: 30rem;
+    background: linear-gradient(to left top, rgba(0, 0, 0, 0.805), rgba(0, 0, 0, 0.238), rgba(0, 0, 0, 0.79));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    color: #ffcb03;
+    font-size: 2rem;
+    padding: 5rem 1rem 3rem 1rem;
+    transition: all 0.3s;
+    position: fixed;
+    top: 50%;
+    transform: translate(0, -50%);
+    /* z-index: 2; */
+}
+
+#btnOk {
+    /* background-image: linear-gradient(to left top, rgb(57, 179, 133), rgb(155, 225, 93)); */
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.595);
+    color: white;
+    /* border: none; */
+    padding: .5rem;
+    cursor: pointer;
+    font-size: 2rem;
+    width: 80%;
+    border-radius: 3rem;
+    transition: all 0.3s;
+}
+
+#btnOk:hover {
+    background-color: rgba(255, 255, 255, 0.237);
+}
+
+/* universal class */
+.opacity {
+    opacity: 100;
+}
+
+.overflow {
+    overflow: hidden;
+}
+
+.display {
+    display: flex;
+}
