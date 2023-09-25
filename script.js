@@ -200,11 +200,10 @@ function displayMovments(movements, sort = false) {
 }
 
 // sort all movments
-let count = 0;
+let sorted = false;
 btnSort.addEventListener('click', () => {
-    count++;
-    let sort = count % 2 == 0 ? false : true;
-    displayMovments(currentAccount.movements, sort);
+    displayMovments(currentAccount.movements, !sorted);
+    sorted = !sorted;
 })
 
 // logout the account in time
