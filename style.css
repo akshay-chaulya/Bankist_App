@@ -19,8 +19,9 @@ body {
 }
 
 nav {
-    height: 15vh;
+    min-height: 15vh;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     padding: 0 40px;
@@ -33,7 +34,7 @@ nav {
 }
 
 .logo {
-    height: 60%;
+    height: 8rem;
 }
 
 .login_input {
@@ -47,6 +48,7 @@ nav {
     border: 1px solid #fff;
     outline: none;
     transition: all 00.3s;
+    margin: 2rem;
 }
 
 .login_input::placeholder {
@@ -188,7 +190,6 @@ nav {
 
 .summary_btn {
     border: none;
-    font-size: 1.2rem;
     margin-left: 4rem;
     cursor: pointer;
     background-color: inherit;
@@ -305,26 +306,33 @@ nav {
     width: 30rem;
     background: linear-gradient(to left top, rgba(0, 0, 0, 0.805), rgba(0, 0, 0, 0.238), rgba(0, 0, 0, 0.79));
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
     text-align: center;
     color: #ffcb03;
     font-size: 2rem;
-    padding: 5rem 1rem 3rem 1rem;
     transition: all 0.3s;
     position: fixed;
     top: 50%;
     transform: translate(0, -50%);
-    /* z-index: 2; */
+}
+
+.errorTextContainer {
+    height: 70%;
+    width: 100%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
 }
 
 #btnOk {
-    /* background-image: linear-gradient(to left top, rgb(57, 179, 133), rgb(155, 225, 93)); */
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translate(-50%);
     background-color: transparent;
     border: 1px solid rgba(255, 255, 255, 0.595);
     color: white;
-    /* border: none; */
     padding: .5rem;
     cursor: pointer;
     font-size: 2rem;

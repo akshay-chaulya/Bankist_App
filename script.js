@@ -267,10 +267,18 @@ btnLoan.addEventListener("click", (e) => {
     e.preventDefault();
 
     let loanAmount = Number(inputLoainAmount.value);
-    const eligibility = currentAccount.movements.some(acc => acc > loanAmount * 0.1);
+    const eligibility = currentAccount.movements.some(acc => acc >= loanAmount * 0.1);
     if (loanAmount > 0 && eligibility) {
         currentAccount.movements.push(loanAmount);
         updateUI(currentAccount)
+        displayMessage(`Loan amount ${loanAmount} is successfuly diposit in your account. `)
+    } else {
+        if (loanAmount <= 0) {
+            displayMessage("Please enter a valide amount");
+        } else {
+            displayMessage(`Eligibility: Minimum 10% of amount should be diposit in your acount.
+            The eligibility criteria could not Fill.`)
+        }
     }
 
     inputLoainAmount.value = "";
@@ -288,7 +296,17 @@ btnClose.addEventListener("click", (e) => {
         const index = accounts.findIndex(acc => acc.userName === currentAccount.userName);
         accounts.splice(index, 1)
         mainContainer.classList.remove("opacity");
+        displayMessage("Account deleted successfuly")
 
+    } else if (!inputClosePin.value || !inputCloseUser.value) {
+        displayMessage("Please fill proparly")
+    } else if (
+        inputCloseUser.value === currentAccount.userName
+        && Number(inputClosePin.value) !== currentAccount.pin
+    ) {
+        displayMessage("Wrong password!")
+    } else {
+        displayMessage("Dose not match current acount")
     }
     inputClosePin.value = inputCloseUser.value = "";
     inputClosePin.blur();
