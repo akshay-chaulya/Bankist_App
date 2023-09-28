@@ -124,7 +124,7 @@ nav {
 
 /* MOVMENTS DIV */
 .movments {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.084);
     grid-row: 2 / span 3;
     border-radius: 1.5rem 0 0 0;
     overflow: scroll;
@@ -145,6 +145,11 @@ nav {
     border-radius: 2rem;
     text-transform: uppercase;
 
+}
+
+.moveDate {
+    margin-right: 15rem;
+    font-size: 1.2rem;
 }
 
 .deposit {
@@ -331,7 +336,7 @@ nav {
     left: 50%;
     transform: translate(-50%);
     background-color: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.595);
+    border: 1px solid #ffffff98;
     color: white;
     padding: .5rem;
     cursor: pointer;
