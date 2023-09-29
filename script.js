@@ -212,12 +212,12 @@ function displayAccount(account) {
 function setDateTime() {
     // const local = navigator.language;
     const options = {
-        hour: 'numeric',
-        minute: 'numeric',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        weekday: 'long',
+        hour: '2-digit',
+        minute: '2-digit',
+        day: '2-digit',
+        month: 'short',
+        year: '2-digit',
+        weekday: 'short',
     }
 
     const dateTime = new Intl.DateTimeFormat(currentAccount.locale, options).format();
@@ -419,7 +419,6 @@ btnOk.addEventListener("click", displayMessage);
 
 // for Error messages
 function displayMessage(mess = "This is an error!") {
-    // errorContainer.style.height = `${document.body.offsetHeight + mainContainer.offsetHeight}px`
     document.body.classList.toggle("overflow");
     errorContainer.classList.toggle("display");
     labaleErrorMess.textContent = mess;
