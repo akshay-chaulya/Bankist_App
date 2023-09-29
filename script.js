@@ -7,6 +7,7 @@
 
 /////////////////////////////////////////////////
 // Data
+let accounts = [];
 const account1 = {
     owner: "Jonas Schmedtmann",
     movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
@@ -72,11 +73,15 @@ const account3 = {
     locale: "en-IN",
 };
 
-const accounts = [account1, account2, account3];
+// accounts = [account1, account2, account3];
+// localStorage.setItem("accounts", `${JSON.stringify(accounts)}`)
+
+// get the accounts from localStorage
+accounts = JSON.parse(localStorage.getItem("accounts"))
+const saveAccounts = () => localStorage.setItem("accounts", `${JSON.stringify(accounts)}`);
 
 ////////////////////////////////////////////////////////////
 // Elements
-let errorText;
 
 const mainContainer = document.querySelector(".container");
 const errorContainer = document.querySelector(".errorContainer");
@@ -144,6 +149,23 @@ const modify = function (num) {
     return new Intl.NumberFormat(currentAccount.local, options).format(num);
 }
 
+// login inputs user name and pin functioning
+function loginInputSomeFunctionig() {
+    const allInputs = Array.from(document.querySelectorAll(".modifyInputs"));
+    allInputs.forEach((el, i) => {
+        if (i % 2 === 0) {
+            el.addEventListener("keydown", (stap) => {
+                if (stap.keyCode === 39) allInputs[i + 1].focus();
+            })
+        } else {
+            el.addEventListener("keydown", (stap) => {
+                if (stap.keyCode === 37) allInputs[i - 1].focus();
+            })
+        }
+    })
+}
+loginInputSomeFunctionig()
+
 // login btn 
 btnLogin.addEventListener('click', (e) => {
     e.preventDefault()
@@ -167,7 +189,6 @@ function login() {
         ) {
             displayAccount(currentAccount);
             updateUI(currentAccount);
-            startLogoutTimer();
         } else if (currentAccount
             && currentAccount.pin !== inputLoginPinValue
         ) {
@@ -208,6 +229,8 @@ function updateUI(account) {
     calcDisplayBalance(account)
     calcDisplaySummary(account);
     displayMovments(account);
+    startLogoutTimer();
+    saveAccounts();
 }
 
 // calculat the balance and save it and display
@@ -239,7 +262,6 @@ function calcDisplaySummary(account) {
 function displayMovments(account, sort = false) {
     labaleMovements.innerHTML = "";
     let movs = sort ? account.movements.slice().sort((a, b) => a - b) : account.movements;
-    console.log(account.locale)
     movs.forEach((mov, i) => {
         const date = new Date(account.movementsDates[i])
         let movementsDate = calcDate(account.locale, date)
@@ -283,7 +305,7 @@ btnSort.addEventListener('click', () => {
 
 // logout the account in time
 function startLogoutTimer() {
-    let time = 120;
+    let time = 600;
     if (accountTimout) {
         clearInterval(accountTimout)
     }
@@ -375,6 +397,7 @@ btnClose.addEventListener("click", (e) => {
         const index = accounts.findIndex(acc => acc.userName === currentAccount.userName);
         accounts.splice(index, 1)
         mainContainer.classList.remove("opacity");
+        saveAccounts()
         displayMessage("Account deleted successfuly")
 
     } else if (!inputClosePin.value || !inputCloseUser.value) {
@@ -392,9 +415,7 @@ btnClose.addEventListener("click", (e) => {
 })
 
 // Ok Error
-btnOk.addEventListener("click", () => {
-    displayMessage()
-})
+btnOk.addEventListener("click", displayMessage);
 
 // for Error messages
 function displayMessage(mess = "This is an error!") {

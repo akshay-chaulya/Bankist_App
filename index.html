@@ -24,8 +24,8 @@
             <h1 id="welcome">Log in to get started</h1>
             <img class="logo" src="logo.png" alt="" class="logo">
             <form class="login">
-                <input class="login_input login_input--user" type="" placeholder="user">
-                <input class="login_input login_input--pin" type="text" placeholder="PIN">
+                <input class="login_input modifyInputs login_input--user" type="" placeholder="user">
+                <input class="login_input modifyInputs login_input--pin" type="text" placeholder="PIN" maxlength="4">
                 <button class="login_btn">&rarr;</button>
             </form>
         </nav>
@@ -77,8 +77,8 @@
                 <div class="operation operation--transfer">
                     <h1>Transfer money</h1>
                     <form class="form form_transfer">
-                        <input type="text" class="form_input transfer_input--to">
-                        <input type="number" class="form_input transfer_input--amount">
+                        <input type="text" class="form_input modifyInputs transfer_input--to">
+                        <input type="number" class="form_input modifyInputs transfer_input--amount">
                         <button class="form_btn btn--transfer">&rarr;</button>
                         <p>Transfer to</p>
                         <p>Amount</p>
@@ -97,8 +97,8 @@
                 <div class="operation operation--close">
                     <h1>Close account</h1>
                     <form class="form form_close">
-                        <input type="text" class="form_input form_close_input--user">
-                        <input type="password" class="form_input form_close_input--pin">
+                        <input type="text" class="form_input modifyInputs form_close_input--user">
+                        <input type="password" class="form_input modifyInputs form_close_input--pin" maxlength="4">
                         <button class="form_btn form_btn--close">&rarr;</button>
                         <p>Confirm user</p>
                         <p>Confirm PIN</p>
