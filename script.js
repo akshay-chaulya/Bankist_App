@@ -47,7 +47,32 @@ const account2 = {
     locale: "en-US",
 };
 
-const accounts = [account1, account2];
+const account3 = {
+    owner: "Akshay Chaulya",
+    movements: [1000, 5000, 3400, -150, -790, 60000, -25000, -3210, -1000, 8500, -30, 80000],
+    interestRate: 1.04,
+    pin: 3333,
+
+    movementsDates: [
+        "2022-11-01T13:15:33.035Z",
+        "2022-11-30T09:48:16.867Z",
+        "2022-09-01T06:04:23.907Z",
+        "2023-09-15T14:18:46.235Z",
+        "2023-11-25T16:33:06.386Z",
+        "2023-11-27T14:43:26.374Z",
+        "2023-10-27T18:49:59.371Z",
+        "2023-09-01T12:01:20.894Z",
+        "2023-09-25T16:33:06.386Z",
+        "2023-09-27T14:43:26.374Z",
+        "2023-09-27T18:49:59.371Z",
+        "2023-09-28T12:01:20.894Z",
+
+    ],
+    currency: "INR",
+    locale: "en-IN",
+};
+
+const accounts = [account1, account2, account3];
 
 ////////////////////////////////////////////////////////////
 // Elements
@@ -99,7 +124,8 @@ function createUserName(accounts) {
 }
 createUserName(accounts);
 
-const calcDateTime = function (local, date) {
+// calculat date and for movments
+const calcDate = function (local, date) {
     const calcDayDates = (date1, date2) =>
         Math.round(Math.abs((date2 - date1) / (1000 * 60 * 60 * 24)));
     const dayPassed = calcDayDates(new Date(), date)
@@ -107,6 +133,15 @@ const calcDateTime = function (local, date) {
     if (dayPassed === 1) return "Yesterday";
     if (dayPassed <= 7) return `${dayPassed} day ago`;
     else return new Intl.DateTimeFormat(local).format(date);
+}
+
+// set amounts in cuntry wise currancy
+const modify = function (num) {
+    const options = {
+        style: "currency",
+        currency: currentAccount.currency,
+    }
+    return new Intl.NumberFormat(currentAccount.local, options).format(num);
 }
 
 // login btn 
@@ -177,8 +212,8 @@ function updateUI(account) {
 
 // calculat the balance and save it and display
 function calcDisplayBalance(account) {
-    account.balance = +account.movements.reduce((acc, mov) => acc + mov, 0).toFixed(2);
-    labaleTotalAmount.textContent = `${account.balance}`
+    account.balance = account.movements.reduce((acc, mov) => acc + mov, 0);
+    labaleTotalAmount.textContent = modify(account.balance);
 }
 
 // calculat in, out and interest amount and display it. 
@@ -186,18 +221,18 @@ function calcDisplaySummary(account) {
     const IN = account.movements
         .filter(mov => mov > 0)
         .reduce((acc, mov) => acc + mov, 0);
-    const OUT = account.movements
+    const OUT = Math.abs(account.movements
         .filter(mov => mov < 0)
-        .reduce((acc, mov) => acc + mov, 0);
+        .reduce((acc, mov) => acc + mov, 0));
     const interest = account.movements
         .filter(mov => mov > 0)
         .map(mov => mov * account.interestRate / 100)
         .filter(interest => interest > 1)
         .reduce((acc, mov) => acc + mov, 0);
 
-    labaleAmountIn.textContent = `₹${IN.toFixed(2)}`;
-    labaleAmountOut.textContent = `₹${Math.abs(OUT.toFixed(2))}`;
-    labaleInterestAmount.textContent = `₹${interest.toFixed(2)}`
+    labaleAmountIn.textContent = modify(IN);;
+    labaleAmountOut.textContent = modify(OUT);;
+    labaleInterestAmount.textContent = modify(interest);
 }
 
 // display all current account movments
@@ -207,7 +242,7 @@ function displayMovments(account, sort = false) {
     console.log(account.locale)
     movs.forEach((mov, i) => {
         const date = new Date(account.movementsDates[i])
-        let movementsDate = calcDateTime(account.locale, date)
+        let movementsDate = calcDate(account.locale, date)
 
         let type = "deposit";
         if (mov < 0) {
@@ -222,7 +257,7 @@ function displayMovments(account, sort = false) {
             `
             <span class="moveType ${type}">${i + 1} ${type}</span>
             <span class="moveDate">${movementsDate}</span>
-            <span class="moveAmount">₹${mov.toFixed(2)}</span>
+            <span class="moveAmount">${modify(mov)}</span>
         `
         labaleMovements.prepend(div);
     })
@@ -286,7 +321,7 @@ btnTransfer.addEventListener("click", (e) => {
         recever.movementsDates.push(new Date().toISOString());
         currentAccount.movementsDates.push(new Date().toISOString());
         updateUI(currentAccount);
-        displayMessage(`${transferAmount.toFixed(2)} \n transfer succsefuly`)
+        displayMessage(`${modify(transferAmount)} \n transfer succsefuly`)
     } else {
         if (!inputTransferAmount.value || !inputTransferTo.value) {
             displayMessage("Please fill proparly")
@@ -315,7 +350,7 @@ btnLoan.addEventListener("click", (e) => {
         currentAccount.movements.push(loanAmount);
         currentAccount.movementsDates.push(new Date().toISOString());
         updateUI(currentAccount)
-        displayMessage(`Loan amount ${loanAmount} is successfuly diposit in your account. `)
+        displayMessage(`Loan amount ${modify(loanAmount)} is successfuly diposit in your account. `)
     } else {
         if (loanAmount <= 0) {
             displayMessage("Please enter a valide amount");
