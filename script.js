@@ -7,7 +7,6 @@
 
 /////////////////////////////////////////////////
 // Data
-let accounts = [];
 const account1 = {
     owner: "Jonas Schmedtmann",
     movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
@@ -73,12 +72,12 @@ const account3 = {
     locale: "en-IN",
 };
 
-// accounts = [account1, account2, account3];
+const accounts = [account1, account2, account3];
 // localStorage.setItem("accounts", `${JSON.stringify(accounts)}`)
 
 // get the accounts from localStorage
-accounts = JSON.parse(localStorage.getItem("accounts"))
-const saveAccounts = () => localStorage.setItem("accounts", `${JSON.stringify(accounts)}`);
+// accounts = JSON.parse(localStorage.getItem("accounts"))
+// const saveAccounts = () => localStorage.setItem("accounts", `${JSON.stringify(accounts)}`);
 
 ////////////////////////////////////////////////////////////
 // Elements
@@ -230,7 +229,6 @@ function updateUI(account) {
     calcDisplaySummary(account);
     displayMovments(account);
     startLogoutTimer();
-    saveAccounts();
 }
 
 // calculat the balance and save it and display
@@ -397,7 +395,6 @@ btnClose.addEventListener("click", (e) => {
         const index = accounts.findIndex(acc => acc.userName === currentAccount.userName);
         accounts.splice(index, 1)
         mainContainer.classList.remove("opacity");
-        saveAccounts()
         displayMessage("Account deleted successfuly")
 
     } else if (!inputClosePin.value || !inputCloseUser.value) {
