@@ -196,6 +196,7 @@ nav {
 
 .summary_btn {
     border: none;
+    outline: none;
     margin-left: 4rem;
     cursor: pointer;
     background-color: inherit;
@@ -204,6 +205,7 @@ nav {
 
 .summary_btn:hover {
     background-color: inherit;
+    outline: none;
     color: #8b8b8b;
 }
 
@@ -244,6 +246,7 @@ nav {
 
 .form_btn {
     border: none;
+    outline: none;
     border-radius: .7rem;
     font-size: 1.8rem;
     cursor: pointer;
@@ -380,3 +383,37 @@ nav {
 
 
 /* Media quary */
+@media (max-width: 780px) {
+    .container {
+        grid-auto-columns: auto;
+        grid-template-rows: auto repeat(3, 15rem) repeat(3, 15rem) auto auto;
+        gap: 2rem;
+    }
+
+    /* MOVMENTS DIV */
+    .movments {
+        grid-row: 2 / span 3;
+    }
+
+    .operation--transfer {
+        margin-top: 4rem;
+        grid-row: 5;
+    }
+
+    .operation--loan {
+        grid-row: 6;
+    }
+
+    .operation--close {
+        grid-row: 7;
+    }
+
+    /* SUMMARY DIV */
+    .summary {
+        grid-row: 8;
+    }
+
+    .logout_time {
+        grid-row: 9;
+    }
+}
