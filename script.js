@@ -303,7 +303,7 @@ btnSort.addEventListener('click', () => {
 
 // logout the account in time
 function startLogoutTimer() {
-    let time = 120;
+    let time = 6000;
     if (accountTimout) {
         clearInterval(accountTimout)
     }
